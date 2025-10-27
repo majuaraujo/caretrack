@@ -1,14 +1,8 @@
 # CareTrack
 
-> Aplicativo mobile desenvolvido para o **Challenge FIAP – Cliente: Care Plus**  
-> Solução de bem-estar digital com foco em prevenção, hábitos saudáveis e qualidade de vida.
+CareTrack é um aplicativo mobile desenvolvido com React Native e Expo  para acompanhamento de hábitos e bem-estar, com sensores e lembretes inteligentes. O projeto foi desenvolvido para atender aos requisitos da disciplina de Mobile Development – Challenge FIAP.
 
 ---
-
-# Sobre o Projeto
-
-O **CareTrack** é um aplicativo desenvolvido em **React Native (Expo)** com integração a conceitos de **IoT**, **Mobile Development** e **Service-Oriented Architecture**.  
-A proposta é **promover bem-estar e autocuidado** de forma leve e gamificada — sem recorrer a funcionalidades clínicas (como telemedicina ou diagnósticos).
 
 O app permite que o usuário:
 - Faça login e acesse um ambiente personalizado;
@@ -32,24 +26,15 @@ O app permite que o usuário:
 
 ---
 
-# Estrutura de Pastas
+# Requisitos
 
-```bash
-caretrack/
-├── assets/                # Ícones e imagens (splash, favicon)
-├── src/
-│   ├── screens/
-│   │   ├── LoginScreen.js
-│   │   ├── HomeScreen.js
-│   │   ├── WellnessScreen.js
-│   │   └── ProfileScreen.js
-│   └── components/        # (opcional) componentes reutilizáveis
-├── App.js                 # Estrutura principal com Stack + Tab Navigator
-├── app.json               # Configurações do Expo
-├── babel.config.js        # Configuração de plugins do NativeWind
-├── tailwind.config.js     # Configuração de estilos
-└── package.json           # Dependências e scripts
-```
+Antes de rodar o projeto, certifique-se de ter instalado:
+- Node.js  (LTS recomendado, ex.: v20)
+- npm (vem com o Node)
+- Android Studio com emulador Android configurado (ex.: Pixel 4) ou app Expo Go instalado no celular
+-Java 17 (caso vá usar build nativa com npx expo run:android)
+
+# Como rodar o projeto:
 
 ## 1️ Clonar o repositório
 git clone https://github.com/seuusuario/caretrack.git
@@ -59,10 +44,28 @@ cd caretrack
 npm install
 
 # 3️ Iniciar o servidor Expo
-npx expo start -c
+npx expo start 
 
 ## 4️ Abrir o app no emulador Android
 # (pressione 'a' no terminal com o Pixel 4 aberto)
+
+# Dependências:
+- @react-navigation/native
+- @react-navigation/native-stack
+- @react-navigation/bottom-tabs
+- expo-sensors
+- expo-notifications
+- @react-native-picker/picker
+As dependências são instaladas automaticamente via npm install.
+
+# Funcionalidades:
+- Login com validação
+- Navegação entre múltiplas telas (Login, Home, Hábitos, Pacientes, Configurações)
+- Contagem de passos (mock ou sensor)
+- Lembrete de hidratação com notificações locais
+- Cadastro de pacientes com Picker
+- Navegação com Stack + Tabs
+- Estilização com StyleSheet
 
 # Integrantes
 -Rafael Cristofalli	553521
