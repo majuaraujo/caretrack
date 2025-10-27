@@ -32,7 +32,7 @@ Antes de rodar o projeto, certifique-se de ter instalado:
 - Node.js  (LTS recomendado, ex.: v20)
 - npm (vem com o Node)
 - Android Studio com emulador Android configurado (ex.: Pixel 4) ou app Expo Go instalado no celular
--Java 17 (caso vá usar build nativa com npx expo run:android)
+- Java 17 (caso vá usar build nativa com npx expo run:android)
 
 # Como rodar o projeto:
 
@@ -68,9 +68,9 @@ As dependências são instaladas automaticamente via npm install.
 - Estilização com StyleSheet
 
 # Integrantes
--Rafael Cristofalli	553521
--Enzo Rodrigues	553377
--Hugo Oliveira	553266
--Maria Julia A. Rodrigues	553384
+- Rafael Cristofalli	553521
+- Enzo Rodrigues	553377
+- Hugo Oliveira	553266
+- Maria Julia A. Rodrigues	553384
 
 
