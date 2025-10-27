@@ -1,50 +1,73 @@
-# Welcome to your Expo app 👋
+# CareTrack
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> Aplicativo mobile desenvolvido para o **Challenge FIAP – Cliente: Care Plus**  
+> Solução de bem-estar digital com foco em prevenção, hábitos saudáveis e qualidade de vida.
 
-## Get started
+---
 
-1. Install dependencies
+# Sobre o Projeto
 
-   ```bash
-   npm install
-   ```
+O **CareTrack** é um aplicativo desenvolvido em **React Native (Expo)** com integração a conceitos de **IoT**, **Mobile Development** e **Service-Oriented Architecture**.  
+A proposta é **promover bem-estar e autocuidado** de forma leve e gamificada — sem recorrer a funcionalidades clínicas (como telemedicina ou diagnósticos).
 
-2. Start the app
+O app permite que o usuário:
+- Faça login e acesse um ambiente personalizado;
+- Acompanhe métricas de bem-estar e hábitos diários;
+- Explore conteúdos e desafios de saúde;
+- Gerencie suas preferências no perfil;
+- Experimente uma interface responsiva e intuitiva.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+# Tecnologias Utilizadas
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Categoria | Tecnologias |
+|------------|--------------|
+| Framework principal | [React Native](https://reactnative.dev/) + [Expo SDK 52](https://docs.expo.dev/) |
+| Navegação | `@react-navigation/native`, `@react-navigation/native-stack`, `@react-navigation/bottom-tabs` |
+| Estilização | [NativeWind](https://www.nativewind.dev/) + [TailwindCSS](https://tailwindcss.com/) |
+| Componentes | `@react-native-picker/picker`, `react-native-screens`, `react-native-safe-area-context` |
+| Build e execução | Android Studio (Pixel 4 AVD) |
+| Versão do Node | v20.12.2 |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
-
-When you're ready, run:
+# Estrutura de Pastas
 
 ```bash
-npm run reset-project
+caretrack/
+├── assets/                # Ícones e imagens (splash, favicon)
+├── src/
+│   ├── screens/
+│   │   ├── LoginScreen.js
+│   │   ├── HomeScreen.js
+│   │   ├── WellnessScreen.js
+│   │   └── ProfileScreen.js
+│   └── components/        # (opcional) componentes reutilizáveis
+├── App.js                 # Estrutura principal com Stack + Tab Navigator
+├── app.json               # Configurações do Expo
+├── babel.config.js        # Configuração de plugins do NativeWind
+├── tailwind.config.js     # Configuração de estilos
+└── package.json           # Dependências e scripts
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 1️ Clonar o repositório
+git clone https://github.com/seuusuario/caretrack.git
+cd caretrack
 
-## Learn more
+## 2️ Instalar dependências
+npm install
 
-To learn more about developing your project with Expo, look at the following resources:
+# 3️ Iniciar o servidor Expo
+npx expo start -c
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 4️ Abrir o app no emulador Android
+# (pressione 'a' no terminal com o Pixel 4 aberto)
 
-## Join the community
+# Integrantes
+-Rafael Cristofalli	553521
+-Enzo Rodrigues	553377
+-Hugo Oliveira	553266
+-Maria Julia A. Rodrigues	553384
 
-Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
