@@ -1,5 +1,5 @@
-import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
+import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -8,22 +8,29 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import colors from "../styles/colors";
+} from 'react-native';
+import colors from '../styles/colors';
 
 export default function PatientsScreen() {
-  const [selectedPlan, setSelectedPlan] = useState("careplus-basic");
-  const [note, setNote] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState('careplus-basic');
+  const [note, setNote] = useState('');
 
   const handleSave = () => {
+    if (!selectedPlan) {
+      Alert.alert('Erro', 'Selecione um plano antes de salvar.');
+      return;
+    }
     Alert.alert(
-      "Paciente salvo",
-      `Plano: ${selectedPlan}\nObservação: ${note || "-"}`
+      'Paciente salvo',
+      `Plano: ${selectedPlan}\nObservação: ${note.trim() || '-'}`
     );
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.title}>Cadastro de Paciente</Text>
 
       <Text style={styles.label}>Plano</Text>
@@ -44,11 +51,19 @@ export default function PatientsScreen() {
         multiline
         numberOfLines={4}
         placeholder="Digite observações clínicas..."
+        placeholderTextColor={colors.muted}
         value={note}
         onChangeText={setNote}
+        textAlignVertical="top"
+        accessibilityLabel="Campo de observações clínicas"
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSave}
+        accessibilityRole="button"
+        accessibilityLabel="Salvar cadastro de paciente"
+      >
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -56,19 +71,27 @@ export default function PatientsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: "#fff" },
+  container: {
+    padding: 20,
+    backgroundColor: '#fff',
+  },
   title: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 16,
     color: colors.text,
   },
-  label: { fontSize: 14, color: colors.muted, marginBottom: 6, marginTop: 12 },
+  label: {
+    fontSize: 14,
+    color: colors.muted,
+    marginBottom: 6,
+    marginTop: 12,
+  },
   pickerWrap: {
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   textArea: {
     borderWidth: 1,
@@ -76,7 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     minHeight: 100,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
   button: {
     backgroundColor: colors.success,
@@ -84,5 +107,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 16,
   },
-  buttonText: { color: "#fff", textAlign: "center", fontWeight: "600" },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
 });

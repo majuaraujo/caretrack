@@ -1,43 +1,105 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  Alert,
+  Image,
+  KeyboardAvoidingView, Platform, ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import FormInput from '../components/FormInput';
 import colors from '../styles/colors';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const validate = () => {
+  const validate = useCallback(() => {
     const e = {};
-    if (!email.includes('@')) e.email = 'Informe um e-mail válido';
-    if (password.length < 6) e.password = 'Mínimo de 6 caracteres';
+    if (!EMAIL_RE.test(email.trim())) e.email = 'Informe um e-mail válido';
+    if (password.trim().length < 6) e.password = 'Mínimo de 6 caracteres';
     setErrors(e);
     return Object.keys(e).length === 0;
-  };
+  }, [email, password]);
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
+    if (loading) return;
     if (!validate()) return;
+    setLoading(true);
     Alert.alert('Bem-vindo(a)!', 'Login efetuado com sucesso.', [
-      { text: 'OK', onPress: () => navigation.replace('MainTabs') }
+      {
+        text: 'OK',
+        onPress: () => {
+          setLoading(false);
+          navigation.replace('MainTabs');
+        },
+      },
     ]);
-  };
+  }, [loading, validate, navigation]);
+
+  const canSubmit = useMemo(
+    () => !loading && email.length > 0 && password.length >= 6,
+    [loading, email, password]
+  );
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={{ flex: 1 }}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.container}>
-          <Image source={{ uri: 'https://i.imgur.com/6lZ6r9q.png' }} style={styles.logo} />
+          <Image
+            source={{ uri: 'https://i.imgur.com/6lZ6r9q.png' }}
+            style={styles.logo}
+            accessible
+            accessibilityLabel="Logo do CareTrack"
+          />
+
           <Text style={styles.title}>CareTrack</Text>
 
-          <FormInput label="E-mail" value={email} onChangeText={setEmail}
-            autoCapitalize="none" keyboardType="email-address" error={errors.email} />
+          <FormInput
+            label="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            autoComplete="email"
+            textContentType="username"
+            returnKeyType="next"
+            blurOnSubmit={false}
+            error={errors.email}
+          />
 
-          <FormInput label="Senha" value={password} onChangeText={setPassword}
-            secureTextEntry error={errors.password} />
+          <FormInput
+            label="Senha"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            autoComplete="password"
+            textContentType="password"
+            returnKeyType="done"
+            onSubmitEditing={handleLogin}
+            error={errors.password}
+          />
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Entrar</Text>
+          <TouchableOpacity
+            style={[styles.button, !canSubmit && { opacity: 0.6 }]}
+            onPress={handleLogin}
+            disabled={!canSubmit}
+            accessibilityRole="button"
+            accessibilityLabel="Entrar no aplicativo"
+            testID="login-button"
+          >
+            <Text style={styles.buttonText}>{loading ? 'Entrando...' : 'Entrar'}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -1,6 +1,6 @@
-import * as Notifications from "expo-notifications";
-import * as Sensors from "expo-sensors";
-import { useEffect, useState } from "react";
+import * as Notifications from 'expo-notifications';
+import { Pedometer } from 'expo-sensors';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -9,8 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import colors from "../styles/colors";
+} from 'react-native';
+import colors from '../styles/colors';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -22,12 +22,12 @@ Notifications.setNotificationHandler({
 
 async function getStepCountAsync() {
   try {
-    const available = await Sensors.Pedometer.isAvailableAsync();
+    const available = await Pedometer.isAvailableAsync();
     if (!available) return Math.floor(Math.random() * 4000 + 2000);
     const end = new Date();
     const start = new Date();
     start.setHours(0, 0, 0, 0);
-    const res = await Sensors.Pedometer.getStepCountAsync(start, end);
+    const res = await Pedometer.getStepCountAsync(start, end);
     return res?.steps ?? 0;
   } catch {
     return Math.floor(Math.random() * 4000 + 2000);
@@ -36,21 +36,25 @@ async function getStepCountAsync() {
 
 async function scheduleHydrationReminder(everyMinutes = 60) {
   const { status } = await Notifications.requestPermissionsAsync();
-  if (status !== "granted") throw new Error("Permissão negada");
+  if (status !== 'granted') throw new Error('Permissão negada');
   await Notifications.cancelAllScheduledNotificationsAsync();
   await Notifications.scheduleNotificationAsync({
-    content: { title: "Hidratação", body: "Hora de beber água! 💧" },
+    content: { title: 'Hidratação', body: 'Hora de beber água! 💧' },
     trigger: { seconds: everyMinutes * 60, repeats: true },
   });
 }
 
 export default function HabitsScreen() {
   const [steps, setSteps] = useState(0);
-  const [hydrationEvery, setHydrationEvery] = useState("60");
+  const [hydrationEvery, setHydrationEvery] = useState('60');
 
   const readSteps = async () => setSteps(await getStepCountAsync());
+
   useEffect(() => {
     readSteps();
+    return () => {
+      Notifications.cancelAllScheduledNotificationsAsync();
+    };
   }, []);
 
   return (
@@ -73,15 +77,16 @@ export default function HabitsScreen() {
           keyboardType="numeric"
           style={styles.input}
         />
-        <View style={{ flexDirection: "row", gap: 10 }}>
+        <View style={{ flexDirection: 'row', gap: 10 }}>
           <TouchableOpacity
             style={[styles.btn, { backgroundColor: colors.success }]}
             onPress={async () => {
               try {
-                await scheduleHydrationReminder(Number(hydrationEvery) || 60);
-                Alert.alert("Ativado", "Lembrete de hidratação agendado");
+                const minutes = parseInt(hydrationEvery, 10) || 60;
+                await scheduleHydrationReminder(minutes);
+                Alert.alert('Ativado', 'Lembrete de hidratação agendado');
               } catch (e) {
-                Alert.alert("Erro", String(e?.message || e));
+                Alert.alert('Erro', String(e?.message || e));
               }
             }}
           >
@@ -91,7 +96,7 @@ export default function HabitsScreen() {
             style={[styles.btn, { backgroundColor: colors.danger }]}
             onPress={async () => {
               await Notifications.cancelAllScheduledNotificationsAsync();
-              Alert.alert("Parado", "Lembretes cancelados");
+              Alert.alert('Parado', 'Lembretes cancelados');
             }}
           >
             <Text style={styles.btnText}>Parar</Text>
@@ -103,15 +108,15 @@ export default function HabitsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: "#fff" },
+  container: { padding: 20, backgroundColor: '#fff' },
   title: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 16,
     color: colors.text,
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 12,
@@ -119,14 +124,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardTitle: { fontSize: 14, color: colors.muted },
-  value: { fontSize: 28, fontWeight: "800", marginVertical: 8 },
+  value: { fontSize: 28, fontWeight: '800', marginVertical: 8 },
   btn: {
     backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 10,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
   },
-  btnText: { color: "#fff", fontWeight: "600" },
+  btnText: { color: '#fff', fontWeight: '600' },
   input: {
     borderWidth: 1,
     borderColor: colors.border,
@@ -136,3 +141,4 @@ const styles = StyleSheet.create({
     minWidth: 100,
   },
 });
+
