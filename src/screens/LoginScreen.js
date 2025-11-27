@@ -1,28 +1,30 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from "react";
 import {
   Alert,
   Image,
-  KeyboardAvoidingView, Platform, ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
-import FormInput from '../components/FormInput';
-import colors from '../styles/colors';
+  View,
+} from "react-native";
+import FormInput from "../components/FormInput";
+import colors from "../styles/colors";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const validate = useCallback(() => {
     const e = {};
-    if (!EMAIL_RE.test(email.trim())) e.email = 'Informe um e-mail válido';
-    if (password.trim().length < 6) e.password = 'Mínimo de 6 caracteres';
+    if (!EMAIL_RE.test(email.trim())) e.email = "Informe um e-mail válido";
+    if (password.trim().length < 6) e.password = "Mínimo de 6 caracteres";
     setErrors(e);
     return Object.keys(e).length === 0;
   }, [email, password]);
@@ -31,12 +33,12 @@ export default function LoginScreen({ navigation }) {
     if (loading) return;
     if (!validate()) return;
     setLoading(true);
-    Alert.alert('Bem-vindo(a)!', 'Login efetuado com sucesso.', [
+    Alert.alert("Bem-vindo(a)!", "Login efetuado com sucesso.", [
       {
-        text: 'OK',
+        text: "OK",
         onPress: () => {
           setLoading(false);
-          navigation.replace('MainTabs');
+          navigation.replace("MainTabs");
         },
       },
     ]);
@@ -49,7 +51,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={{ flex: 1 }}
     >
       <ScrollView
@@ -58,7 +60,7 @@ export default function LoginScreen({ navigation }) {
       >
         <View style={styles.container}>
           <Image
-            source={{ uri: 'https://i.imgur.com/6lZ6r9q.png' }}
+            source={require("../../assets/images/favicon.png")}
             style={styles.logo}
             accessible
             accessibilityLabel="Logo do CareTrack"
@@ -99,7 +101,9 @@ export default function LoginScreen({ navigation }) {
             accessibilityLabel="Entrar no aplicativo"
             testID="login-button"
           >
-            <Text style={styles.buttonText}>{loading ? 'Entrando...' : 'Entrar'}</Text>
+            <Text style={styles.buttonText}>
+              {loading ? "Entrando..." : "Entrar"}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -108,9 +112,37 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: colors.background },
-  logo: { width: 96, height: 96, alignSelf: 'center', marginBottom: 16, borderRadius: 20 },
-  title: { fontSize: 28, fontWeight: '700', textAlign: 'center', marginBottom: 24, color: colors.text },
-  button: { backgroundColor: colors.primary, padding: 14, borderRadius: 12, marginTop: 8 },
-  buttonText: { color: '#fff', textAlign: 'center', fontWeight: '600', fontSize: 16 },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 24,
+    backgroundColor: colors.background,
+  },
+  logo: {
+    width: 80, // um pouco menor
+    height: 80,
+    alignSelf: "center",
+    marginBottom: 12,
+    marginTop: 8, // dá um “respiro” visual
+    borderRadius: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 24,
+    color: colors.text,
+  },
+  button: {
+    backgroundColor: colors.primary,
+    padding: 14,
+    borderRadius: 12,
+    marginTop: 8,
+  },
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 16,
+  },
 });
